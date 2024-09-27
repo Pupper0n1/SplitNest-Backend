@@ -1,2 +1,2 @@
 # SplitNest-Backend
-Backend microservices repo for https://github.com/MmagdyHafezZ/SplitNest
+Backend microservices repo for SplitNest
