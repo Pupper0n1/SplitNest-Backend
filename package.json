@@ -1,0 +1,16 @@
+{
+  "name": "microservices-automation",
+  "version": "1.0.0",
+  "description": "Automation for building, cleaning, and installing microservices with Docker",
+  "main": "index.js",
+  "scripts": {
+    "install_all": "./install_all.sh",
+    "cleanup": "./cleanup.sh",
+    "build": "docker compose build",
+    "up": "docker compose up",
+    "down": "docker compose down",
+    "rebuild": "docker compose down && docker compose build && docker compose up"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
