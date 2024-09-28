@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define an array of microservice names
-MICROSERVICES=("auth" "users" "payments" "file-manager" "email-service" "groceries")
+MICROSERVICES=("auth" "users" "payments" "file-manager" "email-service")
 
 # Function to initialize a microservice
 init_microservice() {

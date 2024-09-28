@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the array of microservice directories
-MICROSERVICES=("auth" "users" "payments" "profiles" "file-manager" "email-service" "groceries")
+MICROSERVICES=("auth" "users" "payments" "file-manager" "email-service")
 
 # Loop through each microservice and run yarn install
 for SERVICE in "${MICROSERVICES[@]}"; do

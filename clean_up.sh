@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the array of microservice directories
-MICROSERVICES=("auth" "users" "payments" "profiles" "file-manager" "email-service" "groceries")
+MICROSERVICES=("auth" "users" "payments" "file-manager" "email-service")
 
 # Loop through each microservice and clean up node_modules, package-lock.json, and yarn.lock
 for SERVICE in "${MICROSERVICES[@]}"; do
