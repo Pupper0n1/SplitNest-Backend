@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  auth:
+    build: ./auth
+    ports:
+      - "3000:3000" # Adjust ports as needed
+    environment:
+      - PORT=3000
+    networks:
+      - app-network
+  users:
+    build: ./users
+    ports:
+      - "3001:3001" # Adjust ports as needed
+    environment:
+      - PORT=3001
+    networks:
+      - app-network
+  payments:
+    build: ./payments
+    ports:
+      - "3002:3002" # Adjust ports as needed
+    environment:
+      - PORT=3002
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

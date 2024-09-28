@@ -12,10 +12,7 @@ logs/
 .env
 
 # Docker
-docker-compose.yml
-Dockerfile
 .dockerignore
-**/Dockerfile
 **/.dockerignore
 
 # Ignore Docker volumes and database data
