@@ -1,5 +1,5 @@
 {
-  "name": "payments",
+  "name": "file-manager",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.4",
@@ -22,6 +23,5 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "supertest": "^7.0.0"
-  },
-  "description": ""
+  }
 }

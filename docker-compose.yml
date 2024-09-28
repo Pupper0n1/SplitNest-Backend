@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   auth:
@@ -12,17 +12,41 @@ services:
   users:
     build: ./users
     ports:
-      - "3001:3001" # Adjust ports as needed
+      - "3000:3000" # Adjust ports as needed
     environment:
-      - PORT=3001
+      - PORT=3000
     networks:
       - app-network
   payments:
     build: ./payments
     ports:
-      - "3002:3002" # Adjust ports as needed
+      - "3000:3000" # Adjust ports as needed
     environment:
-      - PORT=3002
+      - PORT=3000
+    networks:
+      - app-network
+  file-manager:
+    build: ./file-manager
+    ports:
+      - "3000:3000" # Adjust ports as needed
+    environment:
+      - PORT=3000
+    networks:
+      - app-network
+  email-service:
+    build: ./email-service
+    ports:
+      - "3000:3000" # Adjust ports as needed
+    environment:
+      - PORT=3000
+    networks:
+      - app-network
+  groceries:
+    build: ./groceries
+    ports:
+      - "3000:3000" # Adjust ports as needed
+    environment:
+      - PORT=3000
     networks:
       - app-network
 
