@@ -1,19 +1,21 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import sequelize from './config/db';
+import authRoutes from './routes/auth';
 
-dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON
+// Sync Sequelize models with the database
+sequelize
+  .sync()
+  .then(() => console.log('Database connected and models synced'))
+  .catch((err) => console.error('Error connecting to the database:', err));
+
 app.use(express.json());
 
-// Basic route
-app.get('/', (req, res) => {
-  res.send('Hello from auth service!');
-});
+app.use('/auth', authRoutes);
 
-// Start server
+// Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log('$SERVICE service running on port', PORT);
+  console.log(`Server running on port ${PORT}`);
 });
