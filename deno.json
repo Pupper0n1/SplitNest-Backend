@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.ns", "dom"]
+  },
+  "importMap": "import_map.json",
+  "nodeModulesDir": "auto",
+  "tasks": {
+    "start": "deno run --allow-net --allow-read --allow-write --allow-env mod.ts",
+    "dev": "deno run --watch --allow-net --allow-read --allow-write --allow-env mod.ts",
+    "test": "deno test --allow-net --allow-read"
+  }
+}

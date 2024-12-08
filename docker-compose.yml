@@ -1,55 +1,17 @@
-version: '3.8'
+# docker-compose.yml
+version: "3.8"
 
 services:
-  auth:
-    build: ./auth
-    ports:
-      - "3000:3000" # Adjust ports as needed
+  db:
+    image: postgres:15
     environment:
-      - PORT=3000
-    networks:
-      - app-network
-  users:
-    build: ./users
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
     ports:
-      - "3000:3000" # Adjust ports as needed
-    environment:
-      - PORT=3000
-    networks:
-      - app-network
-  payments:
-    build: ./payments
-    ports:
-      - "3000:3000" # Adjust ports as needed
-    environment:
-      - PORT=3000
-    networks:
-      - app-network
-  file-manager:
-    build: ./file-manager
-    ports:
-      - "3000:3000" # Adjust ports as needed
-    environment:
-      - PORT=3000
-    networks:
-      - app-network
-  email-service:
-    build: ./email-service
-    ports:
-      - "3000:3000" # Adjust ports as needed
-    environment:
-      - PORT=3000
-    networks:
-      - app-network
-  groceries:
-    build: ./groceries
-    ports:
-      - "3000:3000" # Adjust ports as needed
-    environment:
-      - PORT=3000
-    networks:
-      - app-network
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
-networks:
-  app-network:
-    driver: bridge
+volumes:
+  db_data:

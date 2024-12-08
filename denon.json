@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "start": {
+      "cmd": "deno run --config deno.json --allow-net --allow-read --allow-write --allow-env mod.ts",
+      "desc": "Run the application in production mode"
+    },
+    "dev": {
+      "cmd": "deno run --config deno.json --watch --allow-net --allow-read --allow-write --allow-env mod.ts",
+      "desc": "Run the application in development mode with hot reload"
+    },
+    "test": {
+      "cmd": "deno test --config deno.json --allow-net --allow-read",
+      "desc": "Run the test suite"
+    }
+  },
+  "watch": true
+}

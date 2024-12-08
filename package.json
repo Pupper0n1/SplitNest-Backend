@@ -1,16 +1,20 @@
 {
-  "name": "microservices-automation",
+  "name": "deno-prisma-backend",
   "version": "1.0.0",
-  "description": "Automation for building, cleaning, and installing microservices with Docker",
-  "main": "index.js",
+  "main": "mod.ts",
+  "license": "MIT",
   "scripts": {
-    "install_all": "./install_all.sh",
-    "cleanup": "./cleanup.sh",
-    "build": "docker compose build",
-    "up": "docker compose up",
-    "down": "docker compose down",
-    "rebuild": "docker compose down && docker compose build && docker compose up"
+    "generate": "npx prisma generate",
+    "migrate": "npx prisma migrate dev",
+    "checkdb": "npx prisma studio"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@prisma/extension-accelerate": "^1.2.1",
+    "@prisma/extension-pulse": "^1.2.0",
+    "path-to-regexp": "6.2.1"
+  }
 }

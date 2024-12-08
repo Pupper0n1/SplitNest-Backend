@@ -1,0 +1,111 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["deno"]
+  output          = "../generated/client"
+}
+
+model Bill {
+  billId       Int            @id @default(autoincrement())
+  userId       Int
+  title        String
+  description  String
+  amount       Float
+  location     String
+  date         DateTime
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime
+  User         User           @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  BillAssignee BillAssignee[]
+  Item         Item[]
+  Transaction  Transaction[]
+
+  @@index([date])
+}
+
+model BillAssignee {
+  id     Int  @id @default(autoincrement())
+  billId Int
+  userId Int
+  Bill   Bill @relation(fields: [billId], references: [billId], onDelete: Cascade)
+  User   User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@unique([billId, userId])
+}
+
+model Group {
+  groupId     Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  GroupMember GroupMember[]
+}
+
+model GroupMember {
+  id      Int   @id @default(autoincrement())
+  groupId Int
+  userId  Int
+  Group   Group @relation(fields: [groupId], references: [groupId], onDelete: Cascade)
+  User    User  @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+}
+
+model Item {
+  id         Int       @id @default(autoincrement())
+  billId     Int
+  name       String
+  cost       Float
+  date       DateTime
+  expiryDate DateTime?
+  type       ItemType
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime
+  Bill       Bill      @relation(fields: [billId], references: [billId], onDelete: Cascade)
+}
+
+model Transaction {
+  billId          Int
+  userId          Int
+  payee           String
+  amountPerPerson Float
+  status          TransactionStatus
+  date            DateTime
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime
+  Bill            Bill              @relation(fields: [billId], references: [billId], onDelete: Cascade)
+  User            User              @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@id([billId, userId])
+}
+
+model User {
+  userId         Int            @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  phoneNum       String?
+  email          String         @unique
+  hashedPassword String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  Bill           Bill[]
+  BillAssignee   BillAssignee[]
+  GroupMember    GroupMember[]
+  Transaction    Transaction[]
+
+  @@index([email])
+}
+
+enum ItemType {
+  GROCERY
+  NON_GROCERY
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
