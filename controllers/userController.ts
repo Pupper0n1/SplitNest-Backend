@@ -44,7 +44,28 @@ export class UserController {
     ctx.response.status = Status.OK;
     ctx.response.body = user;
   }
+  static async getMe(ctx: Context) {
+    const userId = ctx.state.user.userId;
+    const user = await prisma.user.findUnique({
+      where: { userId },
+      select: {
+        userId: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phoneNum: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
+    if (!user) {
+      ctx.throw(Status.NotFound, "User not found");
+    }
+
+    ctx.response.status = Status.OK;
+    ctx.response.body = user;
+  }
   // Update a user
   static async update(ctx: Context) {
     const { id } = ctx.params;
@@ -84,5 +105,54 @@ export class UserController {
     } catch (error) {
       ctx.throw(Status.BadRequest, error.message);
     }
+  }
+
+  static async getSummary(ctx: Context) {
+    const { userId } = ctx.params;
+    const user = await prisma.user.findUnique({
+      where: { userId: Number(userId) },
+      select: { email: true },
+    });
+
+    if (!user) {
+      ctx.throw(Status.NotFound, "User not found");
+    }
+
+    // Fetch all transactions related to this user
+    const transactions = await prisma.transaction.findMany({
+      where: { userId: Number(userId) },
+      orderBy: { date: "desc" },
+      take: 10,
+      select: {
+        billId: true,
+        userId: true,
+        payee: true,
+        amountPerPerson: true,
+        status: true,
+        date: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    let totalOwe = 0;
+    let totalOwedToUser = 0;
+
+    for (const t of transactions) {
+      if (t.payee === user.email) {
+        // The user is the payee, so others owe this user
+        totalOwedToUser += t.amountPerPerson;
+      } else {
+        // The user owes someone else
+        totalOwe += t.amountPerPerson;
+      }
+    }
+
+    ctx.response.status = Status.OK;
+    ctx.response.body = {
+      totalOwe,
+      totalOwedToUser,
+      recentTransactions: transactions,
+    };
   }
 }

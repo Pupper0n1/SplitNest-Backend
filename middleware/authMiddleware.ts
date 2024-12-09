@@ -2,12 +2,14 @@
 import { Context, Status, verify } from "../deps.ts";
 import prisma from "../client.ts";
 import { env } from "../deps.ts";
+import { jwtKey } from "../utils/jwtkey.ts";
 
-const jwtKey = env.JWT_SECRET;
 export async function authMiddleware(
   ctx: Context,
   next: () => Promise<unknown>
 ) {
+  console.log("JWT_SECRET in AuthMiddleware:", env.JWT_SECRET);
+
   const authHeader = ctx.request.headers.get("Authorization");
 
   if (!authHeader) {
@@ -15,13 +17,15 @@ export async function authMiddleware(
   }
 
   const token = authHeader.replace("Bearer ", "");
+  console.log("Token in AuthMiddleware:", token);
 
   try {
-    const payload = await verify(token, jwtKey, "HS512");
+    const payload = await verify(token, jwtKey);
+    console.log("Payload in AuthMiddleware:", payload);
 
     // Attach user to context
     ctx.state.user = await prisma.user.findUnique({
-      where: { userId: payload.id },
+      where: { userId: payload.userId as number },
     });
 
     if (!ctx.state.user) {
@@ -30,6 +34,7 @@ export async function authMiddleware(
 
     await next();
   } catch (err) {
+    console.error(err);
     ctx.throw(Status.Unauthorized, "Invalid token");
   }
 }

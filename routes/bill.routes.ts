@@ -5,7 +5,6 @@ import { authMiddleware } from "../middleware/authMiddleware.ts";
 
 const billRouter = new Router();
 
-// Apply auth middleware to all bill routes
 billRouter.use(authMiddleware);
 
 billRouter
@@ -14,6 +13,6 @@ billRouter
   .get("/:id", BillController.getById)
   .put("/:id", BillController.update)
   .delete("/:id", BillController.delete)
-  .post("/:id/assign", BillController.assignUsers); // Assign users to a bill
+  .post("/:id/assign", BillController.assignUsers);
 
 export default billRouter;
